@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to-do list</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body {
+            font-family : Arial, Helvetica, sans - serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: beige;
+        }
+
+.container {
+            background-color: burlywood;
+            border: 2px solid black;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+
+input {
+            border-radius: 4px;
+            padding: 8px;
+        }
+
+button {
+            border-radius: 4px;
+            padding: 8px 20px;
+            background-color: rgb(148, 60, 60);
+            cursor: pointer;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background-color: rgb(199, 89, 89);
+        }
+
+ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 18px;
+        }
+
+li {
+            display: flex;
+            justify-content: space - between;
+            /* border: 2px solid black; */
+            background-color: white;
+            border-radius: 4px;
+            margin: 5px 0;
+            padding: 2px 5px;
+
+        }
+
+        li.completed {
+            text-decoration: line - through;
+            color: gray;
+        }
+
+.edit-btn {
+            color: brown;
+            background-color: rgb(228, 226, 226);
+            cursor: pointer;
+            height: 22px;
+            padding: 3px 10px;
+        }
+
+.edit-btn:hover {
+            background-color: silver;
+        }
+
+.remove-btn {
+            color: brown;
+            background-color: rgb(228, 226, 226);
+            cursor: pointer;
+            height: 22px;
+            padding: 3px 10px;
+        }
+
+.remove-btn:hover {
+            background-color: silver;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>To-Do List</h2>
+        <div class="todo-input">
+            <input type="text" id="taskInput" placeholder="Enter a task">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script>
+        function addTask() {
+            let taskInput = document.getElementById("taskInput");
+            let taskList = document.getElementById("taskList");
+
+            if (taskInput.value.trim() === "") {
+                alert("PLEASE ENTER A TASK!");
+                return;
+            }
+
+            // Create a new list item(li)
+            let li = document.createElement("li");
+
+            // Create a span to hold the task text
+            let taskText = document.createElement("span");
+            taskText.textContent = taskInput.value;
+
+            // Create a checkbox for task completion
+            let taskCompleted = document.createElement("input");
+            taskCompleted.type = "checkbox";
+            taskCompleted.onchange = function () {
+                if (taskCompleted.checked) {
+                    taskText.style.textDecoration = "line-through";
+                } else {
+                    taskText.style.textDecoration = "none";
+                }
+            };
+
+            //Create an Edit button
+            let editBtn = document.createElement("button");
+            editBtn.textContent = "Edit";
+            editBtn.classList.add("edit-btn");
+            editBtn.onclick = function () {
+                let newText = prompt("Edit your task:", taskText.textContent);
+                if (newText !== null && newText.trim() !== "") {
+                    taskText.textContent = newText;
+                }
+
+            };
+
+
+            //Create an Remove button
+            let removeBtn = document.createElement("button");
+            removeBtn.textContent = "X";
+            removeBtn.classList.add("remove-btn");
+            removeBtn.onclick = function () {
+                taskList.removeChild(li);
+            };
+
+            // prepend the checkbox to the <li>
+            li.prepend(taskCompleted);
+
+
+            // Append elements inside the <li>
+            li.appendChild(taskText); //Add the task inside the <li>  
+            li.appendChild(editBtn); //Add the edit button inside the <li>    
+            li.appendChild(removeBtn); //Add the delete button inside the <li>
+            taskList.appendChild(li); //Adds the <li> inside the <ul>
+
+            // Clear input field    
+            taskInput.value = "";
+        }
+
+        // Add task when pressing enter key
+        document.getElementById("taskInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+    </script>
+</body>
+
+</html>
